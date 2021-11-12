@@ -125,7 +125,7 @@ class Image extends BaseType {
                 // check is webp
                 if (isset($this->options->format) && $this->options->format == 'webp')
                 {
-                    // check server has Imagick
+                    // check server support Imagick
                     if (class_exists('Imagick'))
                     {
                         $image = new Imagick();
@@ -134,10 +134,10 @@ class Image extends BaseType {
                         $image->setImageFormat('webp');
                         $image->setImageCompressionQuality(70);
 
-                        $output_file_name_jpg = str_replace(".jpg", ".webp", $output_file);
-                        $output_file_name_png = str_replace(".png", ".webp", $output_file_name_jpg);
+                        $out1 = str_replace(".jpg", ".webp", $output_file);
+                        $out2 = str_replace(".png", ".webp", $out1);
 
-                        $image->writeImage($output_file_name_png);
+                        $image->writeImage($out2);
                     }
                 }
             }
@@ -152,11 +152,7 @@ class Image extends BaseType {
      *
      * @return string
      */
-    protected
-    function generateFileName(
-        $file,
-        $path
-    ) {
+    protected function generateFileName($file, $path) {
         if (isset($this->options->preserveFileUploadName) && $this->options->preserveFileUploadName)
         {
             $filename = basename($file->getClientOriginalName(), '.'.$file->getClientOriginalExtension());
@@ -182,10 +178,7 @@ class Image extends BaseType {
         return $filename;
     }
 
-    private
-    function is_animated_gif(
-        $filename
-    ) {
+    private function is_animated_gif($filename) {
         $raw = file_get_contents($filename);
 
         $offset = 0;
