@@ -120,7 +120,7 @@ class Image extends BaseType {
             } else
             {
                 //no thumbnails
-                $output_file = Storage::disk('public')->path($path.$filename.'.'.$file->getClientOriginalExtension());
+                $out_file = Storage::disk('public')->path($path.$filename.'.'.$file->getClientOriginalExtension());
 
                 // check is webp
                 if (isset($this->options->format) && $this->options->format == 'webp')
@@ -129,12 +129,13 @@ class Image extends BaseType {
                     if (class_exists('Imagick'))
                     {
                         $image = new Imagick();
-                        $image->readImage($output_file);
+                        $image->readImage($out_file);
 
                         $image->setImageFormat('webp');
                         $image->setImageCompressionQuality(70);
 
-                        $out1 = str_replace(".jpg", ".webp", $output_file);
+                        // only with jpg & png
+                        $out1 = str_replace(".jpg", ".webp", $out_file);
                         $out2 = str_replace(".png", ".webp", $out1);
 
                         $image->writeImage($out2);
